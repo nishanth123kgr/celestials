@@ -17,13 +17,21 @@
       <img src="../src/img/logo.png" alt="">&nbsp;LUNAR ODYSSEY
     </div>
     <div class="profile-sec flex">
-      <div class="flex flex-col justify-center items-end h-12 pr-3">
+      <div class="flex items-center  items-end h-12 pr-3">
         <!-- <span class="text-gray-500">950020000000</span> -->
+        
+<label for="audio-pref" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white w-fit">Audio Preference</label>
+<select id="audio-pref" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+  <option value="en" selected>English</option>
+  <option value="sp">Spanish</option>
+  <option value="hi">Hindi</option>
+</select>
+
       </div>
     </div>
   </div>
   <div class="flex h-full">
-    <div class="sidebar flex flex-col items-center overflow-hidden text-white pl-2 w-96">
+    <div class="sidebar flex flex-col items-center overflow-hidden text-white pl-2 w-1/3">
       <a class="flex items-center justify-center h-12 px-3 mt-7">
         <div class="h-6 text-xl text-center font-bold">Models</div>
       </a>
@@ -32,7 +40,7 @@
           <a class="flex items-center justify-start w-full h-12 px-3 mt-2 rounded active" data-i="0" onclick="changeModel(this)">
             <div class="flex ml-6  items-center justify-start">
               <i class="fas fa-360-degrees fs-md ml-1"></i>
-              <span class="block ml-2 text-md font-medium">Passive Seismic Experiment</span>
+              <span class="block ml-2 text-md font-medium">PSEP</span>
             </div>
           </a>
           <a class="flex items-center justify-start w-full h-12 px-3 mt-2 rounded" data-i="1" onclick="changeModel(this)">
@@ -62,7 +70,7 @@
         </div>
       </div>
     </div>
-    <div class="main-container w-full flex flex-col">
+    <div class="main-container w-full flex flex-col" style="overflow: hidden;">
       <div class="main w-full overflow-y-scroll overflow-x-hidden">
         <div class="section-container">
           <model-viewer width="100%" height="100%" src="../src/models/psep.glb" ar
@@ -101,11 +109,28 @@
             </div>
           </model-viewer>
         </div>
-        <div class="w-full text-sm text-white cpy-right pl-9 bg-black">
+        <div class="w-full text-sm text-white cpy-right pl-9 hidden bg-black" style="display: none;">
           © Lunar Odyssey. All rights
           reserved.
         </div>
       </div>
+    </div>
+    <div class="sidebar flex flex-col items-center overflow-hidden text-white p-5 w-1/3 text-justify">
+      <h3 class="text-lg font-bold">PSEP</h3>
+      <p>The Passive Seismic Experiment was the first seismometer placed on the Moon's surface. It studied the propagation of seismic waves through the Moon and provided the first detailed look at the Moon's internal structure. This instrument featured four seismometers powered by two solar panels deployed on either side and a dedicated antenna pointed towards our planet.
+
+        <br><br>Regrettably, the seismic instrument package ceased responding to commands at 0400 UT on August 25, 1969. This was likely due to overheating caused by the scorching midday lunar sun. 
+        </p>
+        <button class="play-button rounded-lg" style="background-color: #ecf0f9;
+        border: none;
+        color: black;
+        padding: 10px 27px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;">Play Audio</button>
     </div>
   </div>
   <!-- <model-viewer> HTML element -->

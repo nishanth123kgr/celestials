@@ -283,3 +283,7 @@ body {
   min-height: calc(100vh - 80px);
   height: 100%;
 }
+
+.main-container::-webkit-scrollbar {
+  display: none;
+}
