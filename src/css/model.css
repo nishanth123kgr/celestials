@@ -232,6 +232,10 @@ body {
     cursor: pointer;
 }
 
+.hide{
+  display: none;
+}
+
 
 .profile-pic {
   background: var(--accent);
