@@ -1,17 +1,19 @@
-<script
-  type="module"
-  src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"
-></script>
 
-<model-viewer style="width: 100%; height: 100%;"
-  class="model"
-  id="model-id"
-  src="psep.glb"
-  ar
-  ar-modes="webxr scene-viewer quick-look"
-  camera-controls
-  shadow-intensity="1"
-  shadow-softness="1"
-  interpolation-decay="150"
-  min-field-of-view="12deg"
-></model-viewer>
+    <script
+      type="module"
+      src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"
+    ></script>
+
+    <model-viewer
+      style="width: 100%; height: 100%"
+      class="model"
+      id="model-id"
+      src="../src/models/psep.glb"
+      ar
+      ar-modes="webxr scene-viewer quick-look"
+      camera-controls
+      shadow-intensity="1"
+      shadow-softness="1"
+      interpolation-decay="150"
+      min-field-of-view="12deg"
+    ></model-viewer>
