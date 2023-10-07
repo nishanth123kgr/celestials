@@ -1,19 +1,112 @@
+<!doctype html>
+<html lang="en">
 
-    <script
-      type="module"
-      src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"
-    ></script>
+<head>
+  <title>Passive Siesmic Experiment</title>
+  <meta charset="utf-8">
+  <meta name="description" content="&lt;model-viewer&gt; template">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.0.1/tailwind.min.css" rel="stylesheet">
+  <link href="https://site-assets.fontawesome.com/releases/v6.4.0/css/all.css" rel="stylesheet" />
+  <link type="text/css" href="../src/css/model.css" rel="stylesheet" />
+</head>
 
-    <model-viewer
-      style="width: 100%; height: 100%"
-      class="model"
-      id="model-id"
-      src="../src/models/psep.glb"
-      ar
-      ar-modes="webxr scene-viewer quick-look"
-      camera-controls
-      shadow-intensity="1"
-      shadow-softness="1"
-      interpolation-decay="150"
-      min-field-of-view="12deg"
-    ></model-viewer>
+<body>
+  <div class="top-bar shadow flex justify-between p-5 bg-white relative z-10">
+    <div class="Welcome flex items-center">
+      <img src="../src/img/logo.png" alt="">&nbsp;LUNAR ODYSSEY
+    </div>
+    <div class="profile-sec flex">
+      <div class="flex flex-col justify-center items-end h-12 pr-3">
+        <!-- <span class="text-gray-500">950020000000</span> -->
+      </div>
+    </div>
+  </div>
+  <div class="flex h-full">
+    <div class="sidebar flex flex-col items-center overflow-hidden text-white pl-2 w-96">
+      <a class="flex items-center justify-center h-12 px-3 mt-7">
+        <div class="h-6 text-xl text-center font-bold">Models</div>
+      </a>
+      <div class="items flex h-full flex-col w-full mt-2 justify-between">
+        <div class="flex flex-col items-center w-full mt-3">
+          <a class="flex items-center justify-start w-full h-12 px-3 mt-2 rounded active" onclick="">
+            <div class="flex ml-6  items-center justify-start">
+              <i class="fas fa-360-degrees fs-md ml-1"></i>
+              <span class="block ml-2 text-md font-medium">Passive Seismic Experiment</span>
+            </div>
+          </a>
+          <a class="flex items-center justify-start w-full h-12 px-3 mt-2 rounded" onclick="">
+            <div class="flex ml-6  items-center justify-start">
+              <i class="fas fa-360-degrees fs-md ml-1"></i>
+              <span class="block ml-3 text-md font-medium">Isotope Heater</span>
+            </div>
+          </a>
+          <a class="flex items-center justify-start w-full h-12 px-3 mt-2 rounded" onclick="">
+            <div class="flex ml-6  items-center justify-start">
+              <i class="fas fa-360-degrees fs-md ml-1"></i>
+              <span class="block ml-3 text-md font-medium">Antenna</span>
+            </div>
+          </a>
+          <a class="flex items-center justify-start w-full h-12 px-3 mt-2 rounded" onclick="">
+            <div class="flex ml-6  items-center justify-start">
+              <i class="fas fa-360-degrees fs-md ml-1"></i>
+              <span class="block ml-3 text-md font-medium">Antenna</span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="main-container w-full flex flex-col">
+      <div class="main w-full overflow-y-scroll overflow-x-hidden">
+        <div class="section-container">
+          <model-viewer width="100%" height="100%" src="../src/models/psep.glb" ar
+            ar-modes="webxr scene-viewer quick-look" camera-controls poster="poster.webp" shadow-intensity="1"
+            exposure="0.4" auto-rotate>
+            <button class="Hotspot" slot="hotspot-1"
+              data-position="-0.8590692370595878m 0.22990403833026463m 0.672699567108981m"
+              data-normal="-0.9395459327687684m 0.3424228967485422m 4.6007542659911885e-8m"
+              data-visibility-attribute="visible">
+              <div class="HotspotAnnotation">Solar Panel</div>
+            </button><button class="Hotspot" slot="hotspot-2"
+              data-position="-0.24952389877257863m 0.8766193252748973m 0.3738014933363515m"
+              data-normal="-0.9186630518371947m 0.00023971005168662153m 0.3950419467958597m"
+              data-visibility-attribute="visible">
+              <div class="HotspotAnnotation">Antenna</div>
+            </button><button class="Hotspot" slot="hotspot-3"
+              data-position="0.16782941141873814m 0.2866622875234165m 0.23234877331535447m"
+              data-normal="0.6695976493354696m -9.979153824220758e-8m 0.742724032197965m"
+              data-visibility-attribute="visible">
+              <div class="HotspotAnnotation">Isotope Heater</div>
+            </button><button class="Hotspot" slot="hotspot-7"
+              data-position="-0.03415842297642291m 0.6745012026276183m -0.07733799218520959m"
+              data-normal="-0.287959322737983m 0.00006611993696709519m -0.9576426390237833m"
+              data-visibility-attribute="visible">
+              <div class="HotspotAnnotation">Passive Seismometer
+              </div>
+            </button>
+            <div class="progress-bar hide" slot="progress-bar">
+              <div class="update-bar"></div>
+            </div>
+            <button slot="ar-button" id="ar-button">
+              View in your space
+            </button>
+            <div id="ar-prompt">
+              <img src="../src/img/ar_hand_prompt.png">
+            </div>
+          </model-viewer>
+        </div>
+        <div class="w-full text-sm text-white cpy-right pl-9 bg-black">
+          © Lunar Odyssey. All rights
+          reserved.
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- <model-viewer> HTML element -->
+
+  <script src="../src/js/model.js"></script>
+  <!-- Loads <model-viewer> for browsers: -->
+  <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.2.0/model-viewer.min.js"></script>
+</body>
+
+</html>
