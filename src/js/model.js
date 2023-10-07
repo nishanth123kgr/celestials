@@ -29,6 +29,10 @@ document.getElementById('play_button').addEventListener('click', (event) => {
     event.target.innerHTML = 'Play Audio';
     audio.pause();
   }
+
+  audio.addEventListener('ended', () => {
+    event.target.innerHTML = 'Play Audio';
+  });
 });
 
 
