@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://cdn.jsdelivr.net/npm/aframe@1.4.2/dist/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.157.0/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/aframe-physics-system@4.0.2/dist/aframe-physics-system.min.js"></script>
+  </head>
+  <body>
+    <a-scene physics>
+      <a-assets>
+        <img src="./src/img/galaxy.jpg" id="sky_galaxy" />
+        <a-asset-item src="src/models/m_surf.glb" id="surface"></a-asset-item>
+      </a-assets>
+      <a-entity id="camera" position="0 5 0" >
+        <!-- <a-camera look-controls wasd-controls user-height="1.6"></a-camera> -->
+        <a-camera look-controls wasd-controls user-height="1.6" position="0 1.6 0">
+          <a-follow-camera distance="2"></a-follow-camera>
+        </a-camera>
+      </a-entity>
+      <!-- <a-entity
+        geometry="primitive: sphere; radius: 1"
+        material="color: red"
+        position="0 1.6 -5"
+        dynamic-body
+      > -->
+      <!-- <a-camera look-controls wasd-controls user-height="1.6"></a-camera> -->
+    <!-- </a-entity> -->
+      <!-- <a-entity
+        geometry="primitive: plane; height: 4; width: 4;"
+        position="0 0 -5"
+        material="color: #CCC; side: double;"
+        rotation="-90 0 0"
+        static-body
+      ></a-entity> -->
+      <!-- <a-plane position="0 0 -5" rotation="-90 0 0" width="4" height="4" color="#7BC8A4" shadow static-body></a-plane> -->
+      <a-sky src="#sky_galaxy" geometry="radius:5000;"></a-sky>
+      <a-entity gltf-model="#surface"  position="0 0 0" scale="10 10 10"></a-entity>
+      <!-- <a-light
+        type="ambient"
+        color="#888"
+        intensity="0.2"
+      ></a-light> -->
+      <a-light
+        type="directional"
+        position="2 4 -3"
+        intensity="0.9"
+        target="#moon-surface"
+        
+      ></a-light>
+      
+    </a-scene>
+    <script>
+      AFRAME.registerComponent('follow-camera', {
+        schema: {
+          distance: { type: 'number', default: 2 }
+        },
+      
+        tick: function() {
+          // Get the current position of the ground.
+          const groundPosition = this.el.sceneEl.querySelector('[gltf-model]').object3D.getWorldPosition();
+      
+          // Set the position of the camera to the position of the ground, plus an offset.
+          this.el.object3D.position.copy(groundPosition).add(new THREE.Vector3(0, this.data.distance, 0));
+        }
+      });
+    </script>
+  </body>
+</html>
