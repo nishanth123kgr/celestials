@@ -2,20 +2,366 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>three</title>
+    <title>Document</title>
+    <link rel="stylesheet" href="sample.css">
     <style>
-        body {
-            margin: 0;
-            padding: 0;
+        @font-face {
+    font-family: "nasalization-rg";
+    src: url("./nasalization-rg.otf");
+}
+        body{
+            margin:  0;
             overflow: hidden;
         }
+        canvas{
+
+            display:block;
+        }
+        
+#c {
+  width: 100%;  /* let our container decide our size */
+  height: 100%;
+  display: block;
+}
+#container {
+  position: relative;  /* makes this the origin of its children */
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+#labels {
+  position: absolute;  /* let us position ourself inside the container */
+  z-index: 0;          /* make a new stacking context so children don't sort with rest of page */
+  left: 0;             /* make our position the top left of the container */
+  top: 0;
+  color: white;
+}
+#labels>div {
+  position: absolute;  /* let us position them inside the container */
+  left: 0;             /* make their default position the top left of the container */
+  top: 0;
+  cursor: pointer;     /* change the cursor to a hand when over us */
+  font-size: small;
+  user-select: none;   /* don't let the text get selected */
+  pointer-events: none;  /* make us invisible to the pointer */
+  text-shadow:         /* create a black outline */
+  -1px -1px 0 #000,
+  0   -1px 0 #000,
+  1px -1px 0 #000,
+  1px  0   0 #000,
+  1px  1px 0 #000,
+  0    1px 0 #000,
+  -1px  1px 0 #000,
+  -1px  0   0 #000;
+}
+#labels>div:hover {
+  color: red;
+}
+.sidebar_menu{
+            font-family: 'nasalization-rg';
+            position: fixed;
+            height: 100vh;
+            width: 350px;
+            left: -350px;
+            background: rgba(255, 255,255, 0.1);
+            box-shadow: 0 0 6px rgba(255, 255,255, 0.5);
+        }
+        .sidebar_menu .logo{
+             position: absolute;
+             width: 100%;
+             height: 60px;
+             box-shadow: 0 0 6px rgba(255, 255,255, 0.5);
+        }
+        .sidebar_menu .logo a{
+            color :#fff;
+            font-size: 25px;
+            font-weight: 500;
+            display: block;
+            text-align: center;
+            left: 50px;
+            line-height: 60px;
+            text-decoration: none;
+        }
+        .sidebar_menu .menu{
+            position: absolute;
+            top: 80px;
+            width: 100%;
+        }
+        .sidebar_menu .menu li{
+            margin-top: 6px;
+            padding: 14px 20px;
+            font-size: 20px;
+            text-decoration: none;
+            color: #fff;
+        }
+       
+        .sidebar_menu .btn_one p{
+            font-size: 25px;
+            line-height: 60px;
+            position: absolute;
+            left: 240px;
+            cursor: pointer;
+            
+            transition: all 0.3s linear;
+            color: #fff;
+        }
+        
+        #check:checked ~ .sidebar_menu{
+            left: 0px
+
+        }
+        .dat-gui {
+  background: transparent;
+  border: 1px solid white;
+}
+
+
     </style>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.157.0/three.min.js" integrity="sha512-nogdM20cZX4FjsqU5H5ecK3vw8LjYN1AcUUWi7asLUVP3eJK5wldywvqFMW8CLd5/xoiJaIL3eXG82SlOWZkTA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.7.9/dat.gui.min.js" integrity="sha512-WoO4Ih0CDOSLYafy22wZD/mcJ7k0ESLqtQsFa6zFKnEUrbtuGU+GkLtVhgt93xa2qewG5gKEC6CWlN8OaCTSVg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 <body>
-    <canvas id="myCanvas"></canvas>
-    <script src="script.js" type="module"></script>
+    
+    
+    <div id="labels"></div>
+    
+ <!-- Controller -->
+ <div id="controls" class="dark-card">
+    <span class="title">Controls</span>
+    <div class="w-full">
+      <label
+        for="light_intensity"
+        class="block text-sm font-medium dark:text-white"
+        >Light Intensity</label
+      >
+      <input
+        id="light_intensity"
+        type="range"
+        min="0"
+        max="100"
+        value="5"
+        class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
+      />
+    </div>
+    <div class="w-full">
+      <label for="map" class="block mb-1 text-sm font-medium dark:text-white"
+        >Map</label
+      >
+      <select
+        id="map"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      >
+        <option selected>Moon map</option>
+        <option value="hill">Hill Shade</option>
+        <option value="gravity">Gravity</option>
+      </select>
+    </div>
+    <div class="flex w-full items-center my-2">
+      <label
+        for="default-checkbox"
+        class="text-sm font-medium dark:text-gray-300"
+        >Apollo Lander</label
+      >
+      <input
+        id="default-checkbox"
+        type="checkbox"
+        value=""
+        class="ml-2 w-4 h-4 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+      />
+    </div>
+    <div class="flex w-full items-center mt-2 mb-2">
+      <label
+        for="default-checkbox"
+        class="text-sm font-medium dark:text-gray-300"
+        >Seas and Oceans</label
+      >
+      <input
+        id="default-checkbox"
+        type="checkbox"
+        value=""
+        class="ml-2 w-4 h-4 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+      />
+    </div>
+    <div class="w-full">
+      <label for="type" class="block mb-1 text-sm font-medium dark:text-white"
+        >Quake Type</label
+      >
+      <select
+        id="type"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      >
+        <option selected>All</option>
+        <option value="sw">Shallow Quake</option>
+        <option value="dq">Deep Quake</option>
+        <option value="ai">Artificial Impact</option>
+      </select>
+    </div>
+    <!-- SW Container -->
+    <div class="sw w-full">
+      <div class="w-full">
+        <label
+          for="year"
+          class="block mb-1 text-sm font-medium dark:text-white"
+          >Year</label
+        >
+        <select
+  id="year"
+  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+>
+  <option selected>Choose a Year</option>
+</select>
+
+      </div>
+      <div class="w-full">
+        <label
+          for="date"
+          class="block mb-1 text-sm font-medium dark:text-white"
+          >Date</label
+        >
+        <select
+          id="Day"
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        >
+          <option selected>Choose a day</option>
+          
+        </select>
+      </div>
+    </div>
+    <!-- DQ Container -->
+    <div class="dq w-full">
+      <div class="w-full">
+        <label
+          for="year"
+          class="block mb-1 text-sm font-medium dark:text-white"
+          >A</label
+        >
+        <select
+          id="year"
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        >
+          <option selected>Choose a A</option>
+          <option value="a">A</option>
+          <option value="b">B</option>
+        </select>
+      </div>
+    </div>
+      <!-- AI Container -->
+    <div class="ai w-full">
+      <div class="w-full">
+        <label
+          for="year"
+          class="block mb-1 text-sm font-medium dark:text-white"
+          >A</label
+        >
+        <select
+          id="year"
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        >
+          <option selected>Choose a A</option>
+          <option value="a">A</option>
+          <option value="b">B</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <!-- Visualizer -->
+  <div id="visualizer" class="dark-card">
+      <span class="title">Quake Data</span>
+    <div class="w-full flex">
+      <span
+        for="year" class="font-bold"
+        >Year :&nbsp;</span
+      >
+      <span
+        id="year2"
+      >None</span>
+    </div>
+    <div class="w-full flex">
+      <span
+        for="day" class="font-bold"
+        >Day :&nbsp;</span
+      >
+      <span
+        id="day"
+      >None    </span>
+    </div>
+    <div class="w-full flex">
+      <span
+        for="detection_time" class="font-bold"
+        >Time of Detection (HH:MM:SS) :&nbsp;</span
+      >
+      <span
+        id="detection_time"
+      >None</span>
+    </div>
+    <div class="w-full flex">
+      <span
+        for="latitude" class="font-bold"
+        >Latitude :&nbsp;</span>
+      <span
+        id="latitude"
+      >None</span>
+    </div>
+    <div class="w-full flex">
+      <span
+        for="longitude" class="font-bold"
+        >Longitude :&nbsp;</span
+      >
+      <span
+        id="longitude"
+      >None</span>
+    </div>
+    <div class="w-full flex">
+      <span
+        for="magnitude" class="font-bold"
+        >Magnitude :&nbsp;</span
+      >
+      <span
+        id="magnitude"
+      >None</span>
+    </div>
+    <div class="w-full flex">
+      <span
+        for="quake_type" class="font-bold"
+        >Type of Quake :&nbsp;</span
+      >
+      <span
+        id="quake_type"
+      >None</span>
+    </div>
+    <div class="w-full flex">
+        <span
+          for="quake_type" class="font-bold"
+          >Detected by stations :&nbsp;</span
+        >
+        <span
+          id="quake_type2"
+        >None</span>
+      </div>
+  </div>
+  
+
+  <script>
+    <!-- Type of Quake script -->
+   
+      document.getElementById('type').addEventListener('change', function() {
+        document.querySelector('div.sw').style.display = 'none';
+        document.querySelector('div.dq').style.display = 'none';
+        document.querySelector('div.ai').style.display = 'none';
+        if (this.value === 'sw') {
+            document.querySelector('div.sw').style.display = 'block';
+        } else if (this.value === 'dq') {
+            document.querySelector('div.dq').style.display = 'block';
+        } else if (this.value === 'ai') {
+            document.querySelector('div.ai').style.display = 'block';
+        }
+      });
+      
+    
+  </script>
+<script src="three.js"></script>
+    <script type="module" src="GLTFLoader.js"></script>
+    <script type="module" src="index.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.7.9/dat.gui.min.js" integrity="sha512-WoO4Ih0CDOSLYafy22wZD/mcJ7k0ESLqtQsFa6zFKnEUrbtuGU+GkLtVhgt93xa2qewG5gKEC6CWlN8OaCTSVg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </body>
 </html>
