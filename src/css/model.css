@@ -287,3 +287,11 @@ body {
 .main-container::-webkit-scrollbar {
   display: none;
 }
+
+.but{
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 120px;
+  z-index: 10000;
+}

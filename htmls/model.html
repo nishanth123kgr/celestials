@@ -1,0 +1,25 @@
+<script
+      type="module"
+      src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"
+    ></script>
+
+
+    <model-viewer
+      style="width: 100%; height: 100%"
+      class="model"
+      id="model-id"
+      src="../src/models/"
+      ar
+      ar-modes="webxr scene-viewer quick-look"
+      camera-controls
+      shadow-intensity="1"
+      shadow-softness="1"
+      interpolation-decay="150"
+      min-field-of-view="12deg"
+    ></model-viewer>
+<script>
+    const modelViewer = document.querySelector("#model-id");
+    let params = new URLSearchParams(location.search);
+    let modelName = params.get('model');
+    modelViewer.setAttribute('src', `../src/models/${modelName.replace('_', '.')}`);
+</script>

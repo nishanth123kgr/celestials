@@ -53,7 +53,7 @@ function changeModel(elem) {
   if (modelIndex != 0) {
     document.querySelectorAll('button').forEach((button) => {
       console.log('button removed');
-      if (button.id !== 'play_button')
+      if (button.id !== 'play_button' && button.id !== 'ar_button_')
         button.style.display = 'none';
     });
   } else {
@@ -81,3 +81,7 @@ const onProgress = (event) => {
 };
 document.querySelector('model-viewer').addEventListener('progress', onProgress);
 
+document.querySelector('#ar_button_').addEventListener('click', () => {
+  let model = document.querySelector('model-viewer').src.split('/').pop().replace('.', '_');
+  window.location.href = `../htmls/model.html?model=${model}`;
+});

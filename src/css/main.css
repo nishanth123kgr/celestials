@@ -1,0 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@700&display=swap');
+
+@font-face {
+  font-family: metrica-light;
+  src: url(../fonts/Metrica-Light.ttf);
+}
+
+body{
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
