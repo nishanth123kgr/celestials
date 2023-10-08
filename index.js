@@ -89,7 +89,7 @@ async function loadJSON(url) {
 let countryInfos;
 let group = new THREE.Group()
 async function loadCountryData() {
-  countryInfos = await loadJSON('sm.json');  
+  countryInfos = await loadJSON('data.json');  
 
   const lonFudge = Math.PI * 1.5;
   const latFudge = Math.PI;
@@ -106,7 +106,7 @@ async function loadCountryData() {
 
   const labelParentElem = document.querySelector('#labels');
   for (const countryInfo of countryInfos) {
-    const {Lat, Long, Coord} = countryInfo;
+    const {Lat, Long, Coord,type} = countryInfo;
 
     // adjust the helpers to point to the latitude and longitude
     lonHelper.rotation.y = THREE.MathUtils.degToRad(Long) + lonFudge;
@@ -118,7 +118,8 @@ async function loadCountryData() {
     positionHelper.getWorldPosition(position);
     countryInfo.position = position;
 
-    // add an element for each country
+
+    console.log(type)
     const elem = document.createElement('div');
     elem.innerHTML =`<div class="loadingio-spinner-ripple-8963hj6n0do"><div class="ldio-6714jzqvamn">
     <div></div><div></div>
@@ -147,11 +148,11 @@ async function loadCountryData() {
       border-radius: 50%;
       animation: ldio-6714jzqvamn 1.408450704225352s cubic-bezier(0,0.2,0.8,1) infinite;
     }.ldio-6714jzqvamn div:nth-child(1) {
-      border-color: #e90c59;
+      border-color: #0074e4;
       animation-delay: 0s;
     }
     .ldio-6714jzqvamn div:nth-child(2) {
-      border-color: #e90c59;
+      border-color: #0074e4;
       animation-delay: -0.704225352112676s;
     }
     .loadingio-spinner-ripple-8963hj6n0do {
@@ -171,8 +172,10 @@ async function loadCountryData() {
     }
     .ldio-6714jzqvamn div { box-sizing: content-box; }
     </style>`;
-    labelParentElem.appendChild(elem);
-    countryInfo.elem = elem;
+    
+
+  labelParentElem.appendChild(elem);
+  countryInfo.elem = elem;
     
     const circleGeometry =  new THREE.SphereGeometry(4/50,30,30)
     const circleMaterial = new THREE.MeshBasicMaterial({color: 0xffff00, transparent: true,
@@ -208,20 +211,43 @@ function updateLabels() {
   // get the camera's position
   camera.getWorldPosition(cameraPosition);
   for (const countryInfo of countryInfos) {
-    const {position, elem,Year,Day} = countryInfo;
-    var selectElement = document.getElementById('year');
-var selectedYear = selectElement.value;
+    const {position,elem} = countryInfo;
 
-var selectElement2 = document.getElementById('Day');
-var selectedDay = selectElement2.value;
-var type = document.getElementById("type");
-var selectedValue = type.value;
-  if(selectedValue == 'sw'){
-if (selectedYear != Year || selectedDay != Day) {
-  elem.style.display = 'none';
-  continue;
- }
-  }
+    var type = document.getElementById("type");
+    var selectedValue = type.value;
+    if(selectedValue == 'sw'){
+      const {Year,Day} = countryInfo;
+      var selectElement = document.getElementById('year');
+      var selectedYear = selectElement.value;
+
+      var selectElement2 = document.getElementById('Day');
+      var selectedDay = selectElement2.value;
+
+      if (selectedYear != Year || selectedDay != Day) {
+        elem.style.display = 'none';
+        continue;
+       }
+        }
+
+
+  else if(selectedValue == 'dq'){
+    const {A} = countryInfo;
+    var selectElement2 = document.getElementById('dqsc');
+    var selectedsc = selectElement2.value;
+    if (selectedsc!=A) {
+      elem.style.display = 'none';
+      continue;
+     }
+      }
+      else if (selectedValue == 'ai'){
+        const {AI,} = countryInfo;
+        var selectElement2 = document.getElementById('scid');
+        var selectedsc = selectElement2.value;
+        if (selectedsc!=AI) {
+          elem.style.display = 'none';
+          continue;
+         }
+          }
  
     // Orient the position based on the camera's orientation.
     // Since the sphere is at the origin and the sphere is a unit sphere
@@ -319,6 +345,35 @@ function onDocumentMouseDown( event )
           let selectedPiece = intersects[0].object.userData
           
           if(selectedPiece.Lat!=undefined){
+            if (selectedPiece.type =='Artifical impact') {
+              document.getElementById("yearl").textContent = "Year: ";
+              document.getElementById("year2").textContent = selectedPiece.Y;
+              document.getElementById("dayl").textContent = "Julien Date: ";
+              document.getElementById("day").textContent = selectedPiece.JD;
+              document.getElementById("detection_timel").textContent ="Time of Detection(HH:MM:SS)"
+              document.getElementById("detection_time").textContent = selectedPiece.Hour+' Hrs '+ selectedPiece.Min+' Min '+ selectedPiece.Sec +' sec';
+              document.getElementById("latitude").textContent = selectedPiece.Lat;
+              document.getElementById("longitude").textContent = selectedPiece.Long;
+              document.getElementById("magnitude").textContent = 'UNknown'
+              document.getElementById("quake_type").textContent = selectedPiece.type;
+              document.getElementById("quake_type2").textContent = selectedPiece.AI;
+              
+            }
+            else if (selectedPiece.type =='Deep Moonquake'){
+              document.getElementById("yearl").textContent = "Year: ";
+              document.getElementById("year2").textContent = "insufficient information";
+              document.getElementById("dayl").textContent = "Side: ";
+              document.getElementById("day").textContent = selectedPiece.Side;
+              document.getElementById("detection_timel").textContent ="Time of Detection(HH:MM:SS)"
+              document.getElementById("detection_time").textContent = "insufficient Information";
+              document.getElementById("latitude").textContent = selectedPiece.Lat;
+              document.getElementById("longitude").textContent = selectedPiece.Long;
+              document.getElementById("magnitude").textContent = 'UNknown'
+              document.getElementById("quake_type").textContent = selectedPiece.type;
+              document.getElementById("quake_type2").textContent = selectedPiece.A;
+
+            }
+            else{
             document.getElementById("year2").textContent = selectedPiece.Year;
 document.getElementById("day").textContent = selectedPiece.Day;
 document.getElementById("detection_time").textContent = selectedPiece.H+' Hrs '+ selectedPiece.M+' Min '+ selectedPiece.S +' sec';
@@ -327,6 +382,7 @@ document.getElementById("longitude").textContent = selectedPiece.Long;
 document.getElementById("magnitude").textContent = selectedPiece.Magnitude;
 document.getElementById("quake_type").textContent = selectedPiece.type;
 document.getElementById("quake_type2").textContent = selectedPiece.Station;
+            }
 
           }
         
@@ -368,10 +424,63 @@ type.addEventListener("change", function() {
   if(selectedValue == 'sw'){
     console.log("yes");
     populateSelect();
+  }
+  else if(selectedValue == 'dq'){
+    console.log("dq");
+    populateSelectdq();
+  }
+  else{
+    populateSelectAI();
 
   }
   
 });
+function populateSelectAI() {
+  var selectElement = document.getElementById('scid');
+
+  // Create a set to store unique values for A
+  var uniqueA = new Set();
+
+  for (const countryInfo of countryInfos) {
+    const { AI, type } = countryInfo;
+
+    if (type === 'Artifical impact') {
+      console.log(AI)
+      if (!uniqueA.has(AI)) {
+        var option = document.createElement('option');
+        option.value = AI;
+        option.textContent = AI;
+        selectElement.appendChild(option);
+
+        // Add A to the set to mark it as added
+        uniqueA.add(AI);
+      }
+    }
+  }
+}
+function populateSelectdq() {
+  var selectElement = document.getElementById('dqsc');
+
+  // Create a set to store unique values for A
+  var uniqueA = new Set();
+
+  for (const countryInfo of countryInfos) {
+    const { A, type } = countryInfo;
+
+    if (type === 'Deep Moonquake') {
+      if (!uniqueA.has(A)) {
+        var option = document.createElement('option');
+        option.value = A;
+        option.textContent = A;
+        selectElement.appendChild(option);
+
+        // Add A to the set to mark it as added
+        uniqueA.add(A);
+      }
+    }
+  }
+}
+
 
 function populateSelect() {
   var selectElement = document.getElementById('year');
