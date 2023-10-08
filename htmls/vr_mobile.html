@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://cdn.jsdelivr.net/npm/aframe@1.4.2/dist/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.157.0/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/aframe-physics-system@4.0.2/dist/aframe-physics-system.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/aframe-animation-component@5.1.2/dist/aframe-animation-component.min.js"></script>
+  </head>
+  <body>
+    <a-scene physics>
+      <a-assets>
+        <img src="../src/img/galaxy.jpg" id="sky_galaxy" />
+        <a-asset-item src="../src/models/untitled.glb" id="surface"></a-asset-item>
+        <a-asset-item src="../src/models/lander.gltf" id="lander"></a-asset-item>
+        <audio id="bgm" src="../src/audio/moon_audio.mp3"></audio>
+      </a-assets>
+      <a-entity id="camera" position="0 5 0" >
+        <a-camera look-controls wasd-controls user-height="1.6" position="0 1.6 0">
+          <a-follow-camera distance="2"></a-follow-camera>
+        </a-camera>
+      </a-entity>
+ 
+      <a-sky src="#sky_galaxy" geometry="radius:5000;"></a-sky>
+      
+      <a-entity gltf-model="#surface" sound="src: #bgm; autoplay: true;" position="0 0 0" scale="3 3 3" static-body animation="property: position; dir: alternate; dur: 100; easing: linear; loop: true; to: 0.25 0 0.25;autoplay:false;"></a-entity>
+      <a-entity gltf-model="#lander"  position="0 3 -4" rotation="0 0 0" dynamic-body></a-entity>
+      <a-light
+        type="directional"
+        position="2 4 -3"
+        intensity="0.9"
+        target="#moon-surface"
+      ></a-light>     
+    </a-scene>
+    <script>
+      AFRAME.registerComponent('follow-camera', {
+        schema: {
+          distance: { type: 'number', default: 2 }
+        },
+      
+        tick: function() {
+          // Get the current position of the ground.
+          const groundPosition = this.el.sceneEl.querySelector('[gltf-model]').object3D.getWorldPosition();
+      
+          // Set the position of the camera to the position of the ground, plus an offset.
+          this.el.object3D.position.copy(groundPosition).add(new THREE.Vector3(0, this.data.distance, 0));
+        }
+      });
+      var button = document.createElement("button");
+      button.innerHTML = "Toggle Animation";
+      button.style.position = "absolute";
+      button.style.top = "10px";
+      button.style.left = "10px";
+      button.addEventListener("click", function() {
+        var entity = document.querySelector('[gltf-model]');
+        var animation = entity.getAttribute('animation');
+        if(animation) {
+          entity.removeAttribute('animation');
+        } else {
+          entity.setAttribute('animation', 'property: position; dir: alternate; dur: 100; easing: linear; loop: true; to: 0.25 0 0.25');
+        }
+      });
+      document.body.appendChild(button);
+    </script>
+  </body>
+</html>
