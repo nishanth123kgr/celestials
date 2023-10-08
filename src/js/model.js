@@ -2,6 +2,13 @@ const models = ['psep.glb', 'isotope_heater.gltf', 'seismometer.glb', 'antenna.g
 
 const audios = ['psep', 'isotope_heater', 'seismometer', 'antenna', 'solar']
 
+const hotspots = ['iso', 'seis', 'ant', 'slr']
+
+hotspots.forEach((hotspot) => {
+  document.getElementById(hotspot).addEventListener('click', () => {
+    changeModel(document.querySelector(`.${hotspot}`));
+  });
+});
 const descriptions = [
   ['PSEP', `The Passive Seismic Experiment was the first seismometer placed on the Moon's surface. It studied the propagation of seismic waves through the Moon and provided the first detailed look at the Moon's internal structure. This instrument featured four seismometers powered by two solar panels deployed on either side and a dedicated antenna pointed towards our planet.
 <br><br>Regrettably, the seismic instrument package ceased responding to commands at 0400 UT on August 25, 1969. This was likely due to overheating caused by the scorching midday lunar sun. 
